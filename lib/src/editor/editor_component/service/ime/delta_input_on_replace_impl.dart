@@ -34,8 +34,7 @@ Future<void> onReplace(
       if (replacement.replacementText.endsWith('\n')) {
         replacement = TextEditingDeltaReplacement(
           oldText: replacement.oldText,
-          replacementText: replacement.replacementText
-              .substring(0, replacement.replacementText.length - 1),
+          replacementText: replacement.replacementText.substring(0, replacement.replacementText.length - 1),
           replacedRange: replacement.replacedRange,
           selection: replacement.selection,
           composing: replacement.composing,
@@ -48,7 +47,7 @@ Future<void> onReplace(
     final start = replacement.replacedRange.start;
     final length = replacement.replacedRange.end - start;
 
-    transaction.replaceText(node, start, length, replacement.replacementText);
+    transaction.replaceText(node, start, length, replacement.replacementText, attributes: node.delta?.first.attributes);
     await editorState.apply(transaction);
   } else {
     await editorState.deleteSelection(selection);
