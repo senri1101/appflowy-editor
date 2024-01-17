@@ -151,9 +151,7 @@ class Transaction {
     Operation? op = operation;
     final Operation? last = _operations.isEmpty ? null : _operations.last;
     if (last != null) {
-      if (op is UpdateTextOperation &&
-          last is UpdateTextOperation &&
-          op.path.equals(last.path)) {
+      if (op is UpdateTextOperation && last is UpdateTextOperation && op.path.equals(last.path)) {
         final newOp = UpdateTextOperation(
           op.path,
           last.delta.compose(op.delta),
@@ -358,6 +356,7 @@ extension TextTransaction on Transaction {
       ..retain(index)
       ..delete(length)
       ..insert(text, attributes: {...newAttributes ?? {}});
+
     addDeltaToComposeMap(node, replace);
 
     afterSelection = Selection.collapsed(
@@ -565,8 +564,7 @@ extension TextTransaction on Transaction {
         continue;
       }
       final deltaQueue = entry.value;
-      final composed =
-          deltaQueue.fold<Delta>(node.delta!, (p, e) => p.compose(e));
+      final composed = deltaQueue.fold<Delta>(node.delta!, (p, e) => p.compose(e));
       assert(composed.every((element) => element is TextInsert));
       updateNode(node, {
         'delta': composed.toJson(),

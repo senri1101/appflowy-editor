@@ -66,8 +66,7 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
       return;
     }
 
-    if (_textInputConnection == null ||
-        _textInputConnection!.attached == false) {
+    if (_textInputConnection == null || _textInputConnection!.attached == false) {
       _textInputConnection = TextInput.attach(
         this,
         configuration,
@@ -93,15 +92,13 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
       return;
     }
 
-    final deltas = getTextEditingDeltas(currentTextEditingValue, value);
     // On mobile, the IME will send a lot of updateEditingValue events, so we
     // need to debounce it to combine them together.
     Debounce.debounce(
       debounceKey,
-      PlatformExtension.isMobile
-          ? const Duration(milliseconds: 10)
-          : Duration.zero,
+      PlatformExtension.isMobile ? const Duration(milliseconds: 30) : Duration.zero,
       () {
+        final deltas = getTextEditingDeltas(currentTextEditingValue, value);
         currentTextEditingValue = value;
         apply(deltas);
       },
@@ -174,9 +171,7 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
 
   void _updateComposing(TextEditingDelta delta) {
     if (delta is! TextEditingDeltaNonTextUpdate) {
-      if (composingTextRange != null &&
-          composingTextRange!.start != -1 &&
-          delta.composing.end != -1) {
+      if (composingTextRange != null && composingTextRange!.start != -1 && delta.composing.end != -1) {
         composingTextRange = TextRange(
           start: composingTextRange!.start,
           end: delta.composing.end,
@@ -186,10 +181,7 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
       }
     }
 
-    if ((PlatformExtension.isWindows ||
-            PlatformExtension.isLinux ||
-            PlatformExtension.isMacOS) &&
-        delta is TextEditingDeltaNonTextUpdate) {
+    if (delta is TextEditingDeltaNonTextUpdate) {
       composingTextRange = delta.composing;
     }
 

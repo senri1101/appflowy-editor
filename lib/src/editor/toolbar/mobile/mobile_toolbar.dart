@@ -106,8 +106,7 @@ class MobileToolbarWidget extends StatefulWidget with WidgetsBindingObserver {
   State<MobileToolbarWidget> createState() => MobileToolbarWidgetState();
 }
 
-class MobileToolbarWidgetState extends State<MobileToolbarWidget>
-    implements MobileToolbarWidgetService {
+class MobileToolbarWidgetState extends State<MobileToolbarWidget> implements MobileToolbarWidgetService {
   bool _showItemMenu = false;
   int? _selectedToolbarItemIndex;
 
@@ -165,12 +164,10 @@ class MobileToolbarWidgetState extends State<MobileToolbarWidget>
 
                         if (!_showItemMenu) {
                           // updateKeyboardHeight = true;
-                          widget.editorState.service.keyboardService
-                              ?.enableKeyBoard(widget.selection);
+                          widget.editorState.service.keyboardService?.enableKeyBoard(widget.selection);
                         } else {
                           updateKeyboardHeight = false;
-                          widget.editorState.service.keyboardService
-                              ?.closeKeyboard();
+                          widget.editorState.service.keyboardService?.closeKeyboard();
                         }
                       } else {
                         _selectedToolbarItemIndex = selectedItemIndex;
@@ -178,8 +175,7 @@ class MobileToolbarWidgetState extends State<MobileToolbarWidget>
                         _showItemMenu = true;
                         // close keyboard when menu pop up
 
-                        widget.editorState.service.keyboardService
-                            ?.closeKeyboard();
+                        widget.editorState.service.keyboardService?.closeKeyboard();
                       }
                     });
                   },
@@ -196,8 +192,7 @@ class MobileToolbarWidgetState extends State<MobileToolbarWidget>
                       onPressed: () {
                         setState(() {
                           _showItemMenu = false;
-                          widget.editorState.service.keyboardService
-                              ?.enableKeyBoard(widget.selection);
+                          widget.editorState.service.keyboardService?.enableKeyBoard(widget.selection);
                         });
                       },
                       icon: AFMobileIcon(
