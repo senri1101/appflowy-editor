@@ -22,10 +22,7 @@ Future<void> onInsert(
 // like _abc_, **abc**,__abc__ ~~abc~~, `abc`
   if (oldText.isNotEmpty &&
       oldText[oldText.length - 1] == '\\' &&
-      (textInserted == '_' ||
-          textInserted == '*' ||
-          textInserted == '~' ||
-          textInserted == '`')) {
+      (textInserted == '_' || textInserted == '*' || textInserted == '~' || textInserted == '`')) {
     backSlashLocation = 1;
 // exclude space enabled shortcut events
 // like - abc, " abc, > abc, # abc, -[] abc

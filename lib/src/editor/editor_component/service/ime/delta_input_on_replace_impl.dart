@@ -44,10 +44,12 @@ Future<void> onReplace(
 
     final node = editorState.getNodesInSelection(selection).first;
     final transaction = editorState.transaction;
-    final start = replacement.replacedRange.start;
-    final length = replacement.replacedRange.end - start;
+    int start = replacement.replacedRange.start;
+    int end = replacement.replacedRange.end;
+    int length = end - start;
+    String text = replacement.replacementText;
 
-    transaction.replaceText(node, start, length, replacement.replacementText, attributes: node.delta?.first.attributes);
+    transaction.replaceText(node, start, length, text, attributes: node.delta?.first.attributes);
     await editorState.apply(transaction);
   } else {
     await editorState.deleteSelection(selection);

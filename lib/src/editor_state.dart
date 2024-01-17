@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 /// the type of this value is bool.
 ///
 /// set true to this key to prevent attaching the text service when selection is changed.
-const selectionExtraInfoDoNotAttachTextService =
-    'selectionExtraInfoDoNotAttachTextService';
+const selectionExtraInfoDoNotAttachTextService = 'selectionExtraInfoDoNotAttachTextService';
 
 class ApplyOptions {
   /// This flag indicates that
@@ -98,8 +97,7 @@ class EditorState {
   late EditorStyle editorStyle;
 
   /// The selection notifier of the editor.
-  final PropertyValueNotifier<Selection?> selectionNotifier =
-      PropertyValueNotifier<Selection?>(null);
+  final PropertyValueNotifier<Selection?> selectionNotifier = PropertyValueNotifier<Selection?>(null);
 
   /// The selection of the editor.
   Selection? get selection => selectionNotifier.value;
@@ -147,10 +145,8 @@ class EditorState {
   List<ToolbarItem> toolbarItems = [];
 
   /// listen to this stream to get notified when the transaction applies.
-  Stream<(TransactionTime, Transaction)> get transactionStream =>
-      _observer.stream;
-  final StreamController<(TransactionTime, Transaction)> _observer =
-      StreamController.broadcast(
+  Stream<(TransactionTime, Transaction)> get transactionStream => _observer.stream;
+  final StreamController<(TransactionTime, Transaction)> _observer = StreamController.broadcast(
     sync: true,
   );
 
@@ -162,8 +158,7 @@ class EditorState {
   /// NOTES: It only works once;
   ///   after the selection is changed, the toggled style will be cleared.
   final toggledStyle = <String, bool>{};
-  late final toggledStyleNotifier =
-      ValueNotifier<Map<String, bool>>(toggledStyle);
+  late final toggledStyleNotifier = ValueNotifier<Map<String, bool>>(toggledStyle);
 
   void updateToggledStyle(String key, bool value) {
     toggledStyle[key] = value;
@@ -190,8 +185,7 @@ class EditorState {
   }
 
   RenderBox? get renderBox {
-    final renderObject =
-        service.scrollServiceKey.currentContext?.findRenderObject();
+    final renderObject = service.scrollServiceKey.currentContext?.findRenderObject();
     if (renderObject != null && renderObject is RenderBox) {
       return renderObject;
     }
@@ -496,8 +490,7 @@ class EditorState {
     if (options.recordUndo) {
       final undoItem = undoManager.getUndoHistoryItem();
       undoItem.addAll(transaction.operations);
-      if (undoItem.beforeSelection == null &&
-          transaction.beforeSelection != null) {
+      if (undoItem.beforeSelection == null && transaction.beforeSelection != null) {
         undoItem.beforeSelection = transaction.beforeSelection;
       }
       undoItem.afterSelection = transaction.afterSelection;
