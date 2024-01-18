@@ -159,9 +159,6 @@ class _TodoListBlockComponentWidgetState extends State<TodoListBlockComponentWid
               textAlign: alignment?.toTextAlign,
               placeholderText: placeholderText,
               textDirection: textDirection,
-              textSpanDecorator: (textSpan) => textSpan.updateTextStyle(textStyle).updateTextStyle(
-                    widget.textStyleBuilder?.call(checked) ?? defaultTextStyle(),
-                  ),
               placeholderTextSpanDecorator: (textSpan) => textSpan.updateTextStyle(
                 placeholderTextStyle,
               ),
@@ -242,12 +239,7 @@ class _TodoListBlockComponentWidgetState extends State<TodoListBlockComponentWid
   }
 
   TextStyle? defaultTextStyle() {
-    if (!checked) {
-      return null;
-    }
-    return TextStyle(
-      color: Colors.grey.shade400,
-    );
+    return null;
   }
 }
 
