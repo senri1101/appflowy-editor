@@ -14,9 +14,11 @@ class KeyboardServiceWidget extends StatefulWidget {
     this.commandShortcutEvents = const [],
     this.characterShortcutEvents = const [],
     this.focusNode,
+    this.contentInsertionConfiguration,
     required this.child,
   });
 
+  final ContentInsertionConfiguration? contentInsertionConfiguration;
   final FocusNode? focusNode;
   final List<CommandShortcutEvent> commandShortcutEvents;
   final List<CharacterShortcutEvent> characterShortcutEvents;
@@ -84,6 +86,7 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
         point,
         editorState,
       ),
+      contentInsertionConfiguration: widget.contentInsertionConfiguration,
     );
 
     focusNode = widget.focusNode ?? FocusNode(debugLabel: 'keyboard service');
@@ -232,6 +235,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
           textCapitalization: TextCapitalization.sentences,
           inputAction: TextInputAction.newline,
           keyboardAppearance: Theme.of(context).brightness,
+          allowedMimeTypes:
+              widget.contentInsertionConfiguration?.allowedMimeTypes ?? [],
         ),
       );
       // disable shortcuts when the IME active
