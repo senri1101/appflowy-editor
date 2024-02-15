@@ -197,6 +197,8 @@ class _CustomizeThemeForEditorState extends State<CustomizeThemeForEditor> {
         }
         return before;
       },
+      lineHeight: 2.25,
+      textHeight: 33,
     );
   }
 }

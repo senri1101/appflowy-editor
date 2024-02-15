@@ -144,6 +144,8 @@ class EditorStyle {
     double? mobileDragHandleWidth,
     bool? enableHapticFeedbackOnAndroid,
     double? cursorWidth,
+    double? lineHeight,
+    double? textHeight,
   }) {
     return EditorStyle(
       padding: padding ?? this.padding,
@@ -162,6 +164,8 @@ class EditorStyle {
       enableHapticFeedbackOnAndroid:
           enableHapticFeedbackOnAndroid ?? this.enableHapticFeedbackOnAndroid,
       cursorWidth: cursorWidth ?? this.cursorWidth,
+      lineHeight: lineHeight ?? this.lineHeight,
+      textHeight: textHeight ?? this.textHeight,
     );
   }
 }
