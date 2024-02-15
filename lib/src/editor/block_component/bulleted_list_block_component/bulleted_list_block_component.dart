@@ -151,6 +151,7 @@ class _BulletedListBlockComponentWidgetState
               cursorWidth: editorState.editorStyle.cursorWidth,
               lineHeight: editorState.editorStyle.lineHeight,
               textHeight: editorState.editorStyle.textHeight,
+              showLine: editorState.editorStyle.showLine,
             ),
           ),
         ],

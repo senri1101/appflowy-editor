@@ -88,7 +88,6 @@ class PageBlockComponent extends BlockComponentStatelessWidget {
           editorState.updateAutoScroller(Scrollable.of(context));
 
           if (index == (items.length - 1) + extentCount) {
-            print('footer');
             return const IgnoreEditorSelectionGesture(
               child: Column(
                 children: [

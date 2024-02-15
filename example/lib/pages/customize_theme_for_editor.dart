@@ -199,6 +199,7 @@ class _CustomizeThemeForEditorState extends State<CustomizeThemeForEditor> {
       },
       lineHeight: 2.25,
       textHeight: 33,
+      showLine: true,
     );
   }
 }

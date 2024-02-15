@@ -31,6 +31,7 @@ class AppFlowyRichText extends StatefulWidget {
     this.textAlign,
     this.cursorColor = const Color.fromARGB(255, 0, 0, 0),
     this.selectionColor = const Color.fromARGB(53, 111, 201, 231),
+    required this.showLine,
     required this.delegate,
     required this.node,
     required this.editorState,
@@ -79,6 +80,9 @@ class AppFlowyRichText extends StatefulWidget {
 
   final Color cursorColor;
   final Color selectionColor;
+
+  /// show line
+  final bool showLine;
 
   @override
   State<AppFlowyRichText> createState() => _AppFlowyRichTextState();
@@ -300,9 +304,10 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
     }
     return Stack(
       children: [
-        Column(
-          children: list,
-        ),
+        if (widget.showLine)
+          Column(
+            children: list,
+          ),
         Container(
           margin: const EdgeInsets.only(left: 4, right: 4),
           child: RichText(

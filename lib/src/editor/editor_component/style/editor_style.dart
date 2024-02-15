@@ -16,6 +16,7 @@ class EditorStyle {
     required this.textSpanDecorator,
     required this.lineHeight,
     required this.textHeight,
+    required this.showLine,
     this.magnifierSize = const Size(72, 48),
     this.mobileDragHandleBallSize = const Size(8, 8),
     this.mobileDragHandleWidth = 2.0,
@@ -46,6 +47,9 @@ class EditorStyle {
 
   /// The height of each text.
   final double textHeight;
+
+  /// show line
+  final bool showLine;
 
   // Customize the text style of the editor.
   //
@@ -88,6 +92,7 @@ class EditorStyle {
     this.cursorWidth = 2.0,
     this.lineHeight = 2.2,
     this.textHeight = 33,
+    this.showLine = false,
   })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 100),
         cursorColor = cursorColor ?? const Color(0xFF00BCF0),
         selectionColor =
@@ -119,6 +124,7 @@ class EditorStyle {
     this.mobileDragHandleWidth = 2.0,
     this.cursorWidth = 2.0,
     this.enableHapticFeedbackOnAndroid = true,
+    this.showLine = true,
   })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 20),
         cursorColor = cursorColor ?? const Color(0xFF00BCF0),
         dragHandleColor = dragHandleColor ?? const Color(0xFF00BCF0),
@@ -146,6 +152,7 @@ class EditorStyle {
     double? cursorWidth,
     double? lineHeight,
     double? textHeight,
+    bool? showLine,
   }) {
     return EditorStyle(
       padding: padding ?? this.padding,
@@ -166,6 +173,7 @@ class EditorStyle {
       cursorWidth: cursorWidth ?? this.cursorWidth,
       lineHeight: lineHeight ?? this.lineHeight,
       textHeight: textHeight ?? this.textHeight,
+      showLine: showLine ?? this.showLine,
     );
   }
 }
