@@ -74,7 +74,8 @@ class TodoListBlockComponentBuilder extends BlockComponentBuilder {
 
   @override
   bool validate(Node node) {
-    return node.delta != null && node.attributes[TodoListBlockKeys.checked] is bool;
+    return node.delta != null &&
+        node.attributes[TodoListBlockKeys.checked] is bool;
   }
 }
 
@@ -95,10 +96,12 @@ class TodoListBlockComponentWidget extends BlockComponentStatefulWidget {
   final List<LogicalKeyboardKey>? toggleChildrenTriggers;
 
   @override
-  State<TodoListBlockComponentWidget> createState() => _TodoListBlockComponentWidgetState();
+  State<TodoListBlockComponentWidget> createState() =>
+      _TodoListBlockComponentWidgetState();
 }
 
-class _TodoListBlockComponentWidgetState extends State<TodoListBlockComponentWidget>
+class _TodoListBlockComponentWidgetState
+    extends State<TodoListBlockComponentWidget>
     with
         SelectableMixin,
         DefaultSelectableMixin,
@@ -159,12 +162,15 @@ class _TodoListBlockComponentWidgetState extends State<TodoListBlockComponentWid
               textAlign: alignment?.toTextAlign,
               placeholderText: placeholderText,
               textDirection: textDirection,
-              placeholderTextSpanDecorator: (textSpan) => textSpan.updateTextStyle(
+              placeholderTextSpanDecorator: (textSpan) =>
+                  textSpan.updateTextStyle(
                 placeholderTextStyle,
               ),
               cursorColor: editorState.editorStyle.cursorColor,
               selectionColor: editorState.editorStyle.selectionColor,
               cursorWidth: editorState.editorStyle.cursorWidth,
+              lineHeight: editorState.editorStyle.lineHeight,
+              textHeight: editorState.editorStyle.textHeight,
             ),
           ),
         ],

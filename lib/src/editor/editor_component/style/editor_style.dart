@@ -14,6 +14,8 @@ class EditorStyle {
     required this.selectionColor,
     required this.textStyleConfiguration,
     required this.textSpanDecorator,
+    required this.lineHeight,
+    required this.textHeight,
     this.magnifierSize = const Size(72, 48),
     this.mobileDragHandleBallSize = const Size(8, 8),
     this.mobileDragHandleWidth = 2.0,
@@ -38,6 +40,12 @@ class EditorStyle {
 
   // The selection color
   final Color selectionColor;
+
+  /// The height of each line.
+  final double lineHeight;
+
+  /// The height of each text.
+  final double textHeight;
 
   // Customize the text style of the editor.
   //
@@ -78,6 +86,8 @@ class EditorStyle {
     TextSpanDecoratorForAttribute? textSpanDecorator,
     this.defaultTextDirection,
     this.cursorWidth = 2.0,
+    this.lineHeight = 2.2,
+    this.textHeight = 33,
   })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 100),
         cursorColor = cursorColor ?? const Color(0xFF00BCF0),
         selectionColor =
@@ -101,6 +111,8 @@ class EditorStyle {
     Color? selectionColor,
     TextStyleConfiguration? textStyleConfiguration,
     TextSpanDecoratorForAttribute? textSpanDecorator,
+    this.lineHeight = 2.2,
+    this.textHeight = 33,
     this.defaultTextDirection,
     this.magnifierSize = const Size(72, 48),
     this.mobileDragHandleBallSize = const Size(8, 8),

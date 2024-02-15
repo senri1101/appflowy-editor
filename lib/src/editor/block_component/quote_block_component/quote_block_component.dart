@@ -143,6 +143,8 @@ class _QuoteBlockComponentWidgetState extends State<QuoteBlockComponentWidget>
                 cursorColor: editorState.editorStyle.cursorColor,
                 selectionColor: editorState.editorStyle.selectionColor,
                 cursorWidth: editorState.editorStyle.cursorWidth,
+                lineHeight: editorState.editorStyle.lineHeight,
+                textHeight: editorState.editorStyle.textHeight,
               ),
             ),
           ],

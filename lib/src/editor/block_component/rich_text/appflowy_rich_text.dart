@@ -22,6 +22,7 @@ class AppFlowyRichText extends StatefulWidget {
     this.cursorHeight,
     this.cursorWidth = 2.0,
     this.lineHeight = 2.285,
+    this.textHeight = 33,
     this.textSpanDecorator,
     this.placeholderText = ' ',
     this.placeholderTextSpanDecorator,
@@ -51,6 +52,9 @@ class AppFlowyRichText extends StatefulWidget {
 
   /// The height of each line.
   final double? lineHeight;
+
+  /// The height of each text.
+  final double? textHeight;
 
   /// customize the text span for rich text
   final AppFlowyTextSpanDecorator? textSpanDecorator;
@@ -276,14 +280,14 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
         maxWidth: width - 48,
       );
     final list = <Stack>[];
-    final h = textPainter.size.height / 33;
+    final h = textPainter.size.height / widget.textHeight!;
     for (var i = 0; i < h; i++) {
       list.add(
         Stack(
           children: [
             Container(
               color: Colors.transparent,
-              height: 33,
+              height: widget.textHeight!,
               width: double.infinity,
             ),
             Container(

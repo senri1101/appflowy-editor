@@ -175,6 +175,8 @@ class _ParagraphBlockComponentWidgetState
                 cursorColor: editorState.editorStyle.cursorColor,
                 selectionColor: editorState.editorStyle.selectionColor,
                 cursorWidth: editorState.editorStyle.cursorWidth,
+                lineHeight: editorState.editorStyle.lineHeight,
+                textHeight: editorState.editorStyle.textHeight,
               ),
             ],
           ),
