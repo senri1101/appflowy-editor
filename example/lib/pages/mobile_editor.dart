@@ -82,7 +82,7 @@ class _MobileEditorState extends State<MobileEditor> {
           backgroundColor: Colors.grey.shade200,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       magnifierSize: const Size(144, 96),
       mobileDragHandleBallSize: const Size(12, 12),
     );

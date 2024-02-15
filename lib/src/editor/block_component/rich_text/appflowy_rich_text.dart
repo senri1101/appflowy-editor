@@ -1,18 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:appflowy_editor/src/core/document/attributes.dart';
-import 'package:appflowy_editor/src/core/document/node.dart';
-import 'package:appflowy_editor/src/core/document/path.dart';
-import 'package:appflowy_editor/src/core/document/text_delta.dart';
-import 'package:appflowy_editor/src/core/location/position.dart';
-import 'package:appflowy_editor/src/core/location/selection.dart';
-import 'package:appflowy_editor/src/editor/block_component/base_component/selection/block_selection_container.dart';
-import 'package:appflowy_editor/src/editor/block_component/rich_text/appflowy_rich_text_keys.dart';
-import 'package:appflowy_editor/src/editor/util/color_util.dart';
-import 'package:appflowy_editor/src/editor_state.dart';
-import 'package:appflowy_editor/src/extensions/text_style_extension.dart';
-import 'package:appflowy_editor/src/render/selection/selectable.dart';
+import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -32,7 +21,7 @@ class AppFlowyRichText extends StatefulWidget {
     super.key,
     this.cursorHeight,
     this.cursorWidth = 2.0,
-    this.lineHeight,
+    this.lineHeight = 2.285,
     this.textSpanDecorator,
     this.placeholderText = ' ',
     this.placeholderTextSpanDecorator,
@@ -120,13 +109,17 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
           : _buildRichText(context),
     );
 
-    return BlockSelectionContainer(
-      delegate: widget.delegate,
-      listenable: widget.editorState.selectionNotifier,
-      node: widget.node,
-      cursorColor: widget.cursorColor,
-      selectionColor: widget.selectionColor,
-      child: child,
+    return Stack(
+      children: [
+        BlockSelectionContainer(
+          delegate: widget.delegate,
+          listenable: widget.editorState.selectionNotifier,
+          node: widget.node,
+          cursorColor: widget.cursorColor,
+          selectionColor: widget.selectionColor,
+          child: child,
+        ),
+      ],
     );
   }
 
@@ -289,18 +282,56 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
   }
 
   Widget _buildRichText(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final textSpan = getTextSpan();
-    return RichText(
-      key: textKey,
-      textAlign: widget.textAlign ?? TextAlign.start,
-      textHeightBehavior: const TextHeightBehavior(
-        applyHeightToFirstAscent: false,
-        applyHeightToLastDescent: false,
-      ),
-      text: widget.textSpanDecorator != null
-          ? widget.textSpanDecorator!(textSpan)
-          : textSpan,
-      textDirection: textDirection(),
+    final TextPainter textPainter = TextPainter(
+      text: textSpan,
+      textAlign: TextAlign.start,
+      textDirection: TextDirection.ltr,
+    )..layout(
+        minWidth: 0,
+        maxWidth: width - 48,
+      );
+    final list = <Stack>[];
+    final h = textPainter.size.height / 33;
+    for (var i = 0; i < h; i++) {
+      list.add(
+        Stack(
+          children: [
+            Container(
+              color: Colors.transparent,
+              height: 33,
+              width: double.infinity,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 0, right: 0),
+              child: const MySeparator(),
+            ),
+          ],
+        ),
+      );
+    }
+    return Stack(
+      children: [
+        Column(
+          children: list,
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 4, right: 4),
+          child: RichText(
+            key: textKey,
+            textAlign: widget.textAlign ?? TextAlign.start,
+            textHeightBehavior: const TextHeightBehavior(
+              applyHeightToFirstAscent: true,
+              applyHeightToLastDescent: true,
+            ),
+            text: widget.textSpanDecorator != null
+                ? widget.textSpanDecorator!(textSpan)
+                : textSpan,
+            textDirection: textDirection(),
+          ),
+        ),
+      ],
     );
   }
 
