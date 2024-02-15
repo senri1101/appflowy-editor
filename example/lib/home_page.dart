@@ -295,8 +295,6 @@ class _HomePageState extends State<HomePage> {
         result = jsonEncode(editorState.document.toJson());
         break;
       case ExportFileType.markdown:
-        result = documentToMarkdown(editorState.document);
-        break;
       case ExportFileType.html:
       case ExportFileType.delta:
         throw UnimplementedError();
@@ -370,8 +368,7 @@ class _HomePageState extends State<HomePage> {
         jsonString = plainText;
         break;
       case ExportFileType.markdown:
-        jsonString = jsonEncode(markdownToDocument(plainText).toJson());
-        break;
+        throw UnimplementedError();
       case ExportFileType.delta:
         final delta = Delta.fromJson(jsonDecode(plainText));
         final document = quillDeltaEncoder.convert(delta);

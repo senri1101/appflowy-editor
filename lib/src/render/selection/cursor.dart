@@ -58,8 +58,11 @@ class CursorState extends State<Cursor> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fromRect(
-      rect: widget.rect,
+    return Positioned(
+      top: widget.rect.top,
+      left: widget.rect.left + 4,
+      width: widget.rect.width,
+      height: 33,
       child: IgnorePointer(
         child: _buildCursor(context),
       ),
@@ -75,9 +78,11 @@ class CursorState extends State<Cursor> {
       case CursorStyle.verticalLine:
         return Container(
           color: color,
+          height: 32,
         );
       case CursorStyle.borderLine:
         return Container(
+          height: 32,
           decoration: BoxDecoration(
             border: Border.all(color: color, width: 2),
           ),
@@ -86,7 +91,7 @@ class CursorState extends State<Cursor> {
         final size = widget.rect.size;
         return Container(
           width: size.width,
-          height: size.height,
+          height: 32,
           color: color.withOpacity(0.2),
         );
     }

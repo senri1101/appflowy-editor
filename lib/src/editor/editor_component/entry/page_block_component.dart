@@ -78,7 +78,6 @@ class PageBlockComponent extends BlockComponentStatelessWidget {
       );
     } else {
       int extentCount = 0;
-      if (header != null) extentCount++;
       if (footer != null) extentCount++;
 
       return ScrollablePositionedList.builder(
@@ -87,15 +86,30 @@ class PageBlockComponent extends BlockComponentStatelessWidget {
         itemCount: items.length + extentCount,
         itemBuilder: (context, index) {
           editorState.updateAutoScroller(Scrollable.of(context));
-          if (header != null && index == 0) {
-            return IgnoreEditorSelectionGesture(
-              child: header!,
-            );
-          }
 
-          if (footer != null && index == (items.length - 1) + extentCount) {
-            return IgnoreEditorSelectionGesture(
-              child: footer!,
+          if (index == (items.length - 1) + extentCount) {
+            return const IgnoreEditorSelectionGesture(
+              child: Column(
+                children: [
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                  MemoLine(),
+                ],
+              ),
             );
           }
 
@@ -113,5 +127,58 @@ class PageBlockComponent extends BlockComponentStatelessWidget {
         scrollOffsetListener: scrollController.scrollOffsetListener,
       );
     }
+  }
+}
+
+class MemoLine extends StatelessWidget {
+  const MemoLine({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          color: Colors.transparent,
+          height: 33,
+          width: double.infinity,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: MySeparator(),
+        ),
+      ],
+    );
+  }
+}
+
+class MySeparator extends StatelessWidget {
+  const MySeparator({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final boxWidth = constraints.constrainWidth();
+        const dashWidth = 4.0;
+        const dashHeight = 1.5;
+        final dashCount = (boxWidth / (2 * dashWidth)).floor();
+        return Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.horizontal,
+          children: List.generate(dashCount, (_) {
+            return const SizedBox(
+              width: dashWidth,
+              height: dashHeight,
+              child: DecoratedBox(
+                decoration:
+                    BoxDecoration(color: Color.fromARGB(255, 204, 204, 204)),
+              ),
+            );
+          }),
+        );
+      },
+    );
   }
 }

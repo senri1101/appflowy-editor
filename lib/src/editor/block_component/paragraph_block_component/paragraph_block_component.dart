@@ -149,40 +149,44 @@ class _ParagraphBlockComponentWidgetState
       layoutDirection: Directionality.maybeOf(context),
     );
 
-    Widget child = Container(
-      width: double.infinity,
-      alignment: alignment,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        textDirection: textDirection,
-        children: [
-          AppFlowyRichText(
-            key: forwardKey,
-            delegate: this,
-            node: widget.node,
-            editorState: editorState,
-            textAlign: alignment?.toTextAlign,
-            placeholderText: _showPlaceholder ? placeholderText : ' ',
-            textSpanDecorator: (textSpan) =>
-                textSpan.updateTextStyle(textStyle),
-            placeholderTextSpanDecorator: (textSpan) =>
-                textSpan.updateTextStyle(placeholderTextStyle),
+    Widget child = Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          alignment: alignment,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             textDirection: textDirection,
-            cursorColor: editorState.editorStyle.cursorColor,
-            selectionColor: editorState.editorStyle.selectionColor,
-            cursorWidth: editorState.editorStyle.cursorWidth,
+            children: [
+              AppFlowyRichText(
+                key: forwardKey,
+                delegate: this,
+                node: widget.node,
+                editorState: editorState,
+                textAlign: alignment?.toTextAlign,
+                placeholderText: _showPlaceholder ? placeholderText : ' ',
+                textSpanDecorator: (textSpan) =>
+                    textSpan.updateTextStyle(textStyle),
+                placeholderTextSpanDecorator: (textSpan) =>
+                    textSpan.updateTextStyle(placeholderTextStyle),
+                textDirection: textDirection,
+                cursorColor: editorState.editorStyle.cursorColor,
+                selectionColor: editorState.editorStyle.selectionColor,
+                cursorWidth: editorState.editorStyle.cursorWidth,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
 
     child = Container(
       color: withBackgroundColor ? backgroundColor : null,
       child: Padding(
         key: blockComponentKey,
-        padding: padding,
+        padding: EdgeInsets.zero,
         child: child,
       ),
     );
