@@ -78,7 +78,7 @@ class PageBlockComponent extends BlockComponentStatelessWidget {
       );
     } else {
       int extentCount = 0;
-      if (footer != null) extentCount++;
+      extentCount++;
 
       return ScrollablePositionedList.builder(
         shrinkWrap: scrollController.shrinkWrap,
@@ -143,16 +143,16 @@ class MemoLine extends StatelessWidget {
           width: double.infinity,
         ),
         Container(
-          margin: EdgeInsets.only(left: 20, right: 20),
-          child: MySeparator(),
+          margin: const EdgeInsets.only(left: 20, right: 20),
+          child: const AppFlowMemoLine(),
         ),
       ],
     );
   }
 }
 
-class MySeparator extends StatelessWidget {
-  const MySeparator({
+class AppFlowMemoLine extends StatelessWidget {
+  const AppFlowMemoLine({
     super.key,
   });
 

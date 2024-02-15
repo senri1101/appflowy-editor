@@ -149,23 +149,6 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
     var cursorOffset =
         _renderParagraph?.getOffsetForCaret(textPosition, Rect.zero) ??
             Offset.zero;
-    if (cursorHeight == null) {
-      cursorHeight =
-          _placeholderRenderParagraph?.getFullHeightForCaret(textPosition);
-      cursorOffset = _placeholderRenderParagraph?.getOffsetForCaret(
-            textPosition,
-            Rect.zero,
-          ) ??
-          Offset.zero;
-      if (textDirection() == TextDirection.rtl) {
-        if (widget.placeholderText.trim().isNotEmpty) {
-          cursorOffset = cursorOffset.translate(
-            _placeholderRenderParagraph?.size.width ?? 0,
-            0,
-          );
-        }
-      }
-    }
     if (widget.cursorHeight != null && cursorHeight != null) {
       cursorOffset = Offset(
         cursorOffset.dx,
@@ -305,7 +288,7 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
             ),
             Container(
               margin: const EdgeInsets.only(left: 0, right: 0),
-              child: const MySeparator(),
+              child: const AppFlowMemoLine(),
             ),
           ],
         ),
