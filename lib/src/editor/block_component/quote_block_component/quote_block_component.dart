@@ -146,6 +146,7 @@ class _QuoteBlockComponentWidgetState extends State<QuoteBlockComponentWidget>
                 lineHeight: editorState.editorStyle.lineHeight,
                 textHeight: editorState.editorStyle.textHeight,
                 showLine: editorState.editorStyle.showLine,
+                maxWidth: editorState.editorStyle.maxWidth,
               ),
             ),
           ],

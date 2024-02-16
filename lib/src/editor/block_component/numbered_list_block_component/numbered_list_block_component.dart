@@ -159,6 +159,7 @@ class _NumberedListBlockComponentWidgetState
               lineHeight: editorState.editorStyle.lineHeight,
               textHeight: editorState.editorStyle.textHeight,
               showLine: editorState.editorStyle.showLine,
+              maxWidth: editorState.editorStyle.maxWidth,
             ),
           ),
         ],

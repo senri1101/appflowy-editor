@@ -32,6 +32,7 @@ class AppFlowyRichText extends StatefulWidget {
     this.cursorColor = const Color.fromARGB(255, 0, 0, 0),
     this.selectionColor = const Color.fromARGB(53, 111, 201, 231),
     required this.showLine,
+    required this.maxWidth,
     required this.delegate,
     required this.node,
     required this.editorState,
@@ -84,6 +85,9 @@ class AppFlowyRichText extends StatefulWidget {
   /// show line
   final bool showLine;
 
+  /// max width
+  final double maxWidth;
+
   @override
   State<AppFlowyRichText> createState() => _AppFlowyRichTextState();
 }
@@ -95,9 +99,6 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
 
   RenderParagraph? get _renderParagraph =>
       textKey.currentContext?.findRenderObject() as RenderParagraph?;
-
-  RenderParagraph? get _placeholderRenderParagraph =>
-      placeholderTextKey.currentContext?.findRenderObject() as RenderParagraph?;
 
   TextSpanDecoratorForAttribute? get textSpanDecoratorForAttribute =>
       widget.textSpanDecoratorForCustomAttributes ??
@@ -274,6 +275,10 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
 
   Widget _buildRichText(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    var maxWidth = widget.maxWidth;
+    if (maxWidth == 0) {
+      maxWidth = width - 48;
+    }
     final textSpan = getTextSpan();
     final TextPainter textPainter = TextPainter(
       text: textSpan,
@@ -281,7 +286,7 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
       textDirection: TextDirection.ltr,
     )..layout(
         minWidth: 0,
-        maxWidth: width - 48,
+        maxWidth: maxWidth,
       );
     final list = <Stack>[];
     final h = textPainter.size.height / widget.textHeight!;
@@ -294,20 +299,20 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
               height: widget.textHeight!,
               width: double.infinity,
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 0, right: 0),
-              child: const AppFlowMemoLine(),
-            ),
+            if (widget.showLine)
+              Container(
+                margin: const EdgeInsets.only(left: 0, right: 0),
+                child: const AppFlowMemoLine(),
+              ),
           ],
         ),
       );
     }
     return Stack(
       children: [
-        if (widget.showLine)
-          Column(
-            children: list,
-          ),
+        Column(
+          children: list,
+        ),
         Container(
           margin: const EdgeInsets.only(left: 4, right: 4),
           child: RichText(
