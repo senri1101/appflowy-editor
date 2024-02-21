@@ -162,7 +162,7 @@ class AppFlowMemoLine extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         final boxWidth = constraints.constrainWidth();
         const dashWidth = 4.0;
-        const dashHeight = 1.5;
+        const dashHeight = 1.0;
         final dashCount = (boxWidth / (2 * dashWidth)).floor();
         return Flex(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
