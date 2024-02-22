@@ -51,7 +51,8 @@ class DeltaTextInputService extends TextInputService with DeltaTextInputClient {
     TextEditingValue textEditingValue,
     TextInputConfiguration configuration,
   ) {
-    if (_textInputConnection == null || _textInputConnection!.attached == false) {
+    if (_textInputConnection == null ||
+        _textInputConnection!.attached == false) {
       _textInputConnection = TextInput.attach(
         this,
         configuration,
@@ -169,7 +170,9 @@ class DeltaTextInputService extends TextInputService with DeltaTextInputClient {
 
   void _updateComposing(TextEditingDelta delta) {
     if (delta is! TextEditingDeltaNonTextUpdate) {
-      if (composingTextRange != null && composingTextRange!.start != -1 && delta.composing.end != -1) {
+      if (composingTextRange != null &&
+          composingTextRange!.start != -1 &&
+          delta.composing.end != -1) {
         composingTextRange = TextRange(
           start: composingTextRange!.start,
           end: delta.composing.end,

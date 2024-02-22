@@ -11,7 +11,6 @@ Future<void> onReplace(
   List<CharacterShortcutEvent> characterShortcutEvents,
 ) async {
   Log.input.debug('onReplace: $replacement');
-
   // delete the selection
   final selection = editorState.selection;
   if (selection == null) {
@@ -34,7 +33,8 @@ Future<void> onReplace(
       if (replacement.replacementText.endsWith('\n')) {
         replacement = TextEditingDeltaReplacement(
           oldText: replacement.oldText,
-          replacementText: replacement.replacementText.substring(0, replacement.replacementText.length - 1),
+          replacementText: replacement.replacementText
+              .substring(0, replacement.replacementText.length - 1),
           replacedRange: replacement.replacedRange,
           selection: replacement.selection,
           composing: replacement.composing,
@@ -49,8 +49,69 @@ Future<void> onReplace(
     int length = end - start;
     String text = replacement.replacementText;
 
-    transaction.replaceText(node, start, length, text, attributes: node.delta?.first.attributes);
+    Attributes? attributes = node.delta?.first.attributes;
+    if (attributes != null) {
+      if (attributes.containsKey('href')) {
+        attributes.remove('href');
+        if (attributes.keys.isEmpty) {
+          attributes = null;
+        }
+      }
+    }
+    transaction.replaceText(
+      node,
+      start,
+      length,
+      text,
+      attributes: attributes,
+      composing: replacement.composing,
+    );
+
     await editorState.apply(transaction);
+
+    // check composing is left
+    final delta = node.delta!;
+    final last = delta.last;
+    var shouldResetComposing = false;
+    if (last.attributes == null) {
+      shouldResetComposing = true;
+    } else {
+      if (!last.attributes!.containsKey('composing')) {
+        shouldResetComposing = true;
+      }
+    }
+
+    if (shouldResetComposing) {
+      final oldOperations = delta.map((e) => e).toList();
+      var newText = '';
+      final newOperations = <TextOperation>[];
+      for (final old in oldOperations) {
+        if (old.attributes != null) {
+          if (old.attributes!.containsKey('composing')) {
+            newText += (old as TextInsert).text;
+          } else {
+            newOperations.add(old);
+          }
+        } else {
+          newOperations.add(old);
+        }
+      }
+      newOperations.add(TextInsert(newText));
+      final newDelta = Delta(operations: newOperations);
+
+      final afterSelection = Selection.collapsed(
+        Position(
+          path: node.path,
+          offset: start + text.length,
+        ),
+      );
+      final updateTransaction = editorState.transaction
+        ..updateNode(node, {
+          'delta': newDelta.toJson(),
+        })
+        ..afterSelection = afterSelection;
+      await editorState.apply(updateTransaction);
+    }
   } else {
     await editorState.deleteSelection(selection);
     // insert the replacement

@@ -308,6 +308,7 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
         ),
       );
     }
+
     return Stack(
       children: [
         Column(
@@ -353,6 +354,9 @@ class _AppFlowyRichTextState extends State<AppFlowyRichText>
       TextStyle textStyle = style.text.copyWith(height: widget.lineHeight);
       final attributes = textInsert.attributes;
       if (attributes != null) {
+        if (attributes.composing == true) {
+          textStyle = textStyle.combine(style.underline);
+        }
         if (attributes.bold == true) {
           textStyle = textStyle.combine(style.bold);
         }
@@ -523,4 +527,6 @@ extension AppFlowyRichTextAttributes on Attributes {
     }
     return null;
   }
+
+  bool get composing => this['composing'] == true;
 }

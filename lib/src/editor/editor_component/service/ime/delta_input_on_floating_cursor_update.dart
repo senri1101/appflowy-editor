@@ -13,7 +13,6 @@ Future<void> onFloatingCursorUpdate(
   EditorState editorState,
 ) async {
   Log.input.debug('onFloatingCursorUpdate: ${point.state}, ${point.offset}');
-
   // support updating the cursor position via the space bar on iOS.
   if (!Platform.isIOS) {
     return;

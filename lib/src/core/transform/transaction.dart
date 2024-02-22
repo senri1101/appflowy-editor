@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:appflowy_editor/appflowy_editor.dart';
 
@@ -151,7 +152,9 @@ class Transaction {
     Operation? op = operation;
     final Operation? last = _operations.isEmpty ? null : _operations.last;
     if (last != null) {
-      if (op is UpdateTextOperation && last is UpdateTextOperation && op.path.equals(last.path)) {
+      if (op is UpdateTextOperation &&
+          last is UpdateTextOperation &&
+          op.path.equals(last.path)) {
         final newOp = UpdateTextOperation(
           op.path,
           last.delta.compose(op.delta),
@@ -336,6 +339,7 @@ extension TextTransaction on Transaction {
     int length,
     String text, {
     Attributes? attributes,
+    TextRange? composing,
   }) {
     final delta = node.delta;
     if (delta == null) {
@@ -348,6 +352,27 @@ extension TextTransaction on Transaction {
         final slicedDelta = delta.slice(index, index + length);
         if (slicedDelta.isNotEmpty) {
           newAttributes = slicedDelta.first.attributes;
+          if (newAttributes != null && composing != null) {
+            if (newAttributes.containsKey('composing')) {
+              if (!composing.isValid) {
+                newAttributes.remove('composing');
+                if (newAttributes.keys.isEmpty) {
+                  newAttributes = null;
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if (composing != null) {
+          if (newAttributes.containsKey('composing')) {
+            if (!composing.isValid) {
+              newAttributes.remove('composing');
+              if (newAttributes.keys.isEmpty) {
+                newAttributes = null;
+              }
+            }
+          }
         }
       }
     }
@@ -564,7 +589,8 @@ extension TextTransaction on Transaction {
         continue;
       }
       final deltaQueue = entry.value;
-      final composed = deltaQueue.fold<Delta>(node.delta!, (p, e) => p.compose(e));
+      final composed =
+          deltaQueue.fold<Delta>(node.delta!, (p, e) => p.compose(e));
       assert(composed.every((element) => element is TextInsert));
       updateNode(node, {
         'delta': composed.toJson(),

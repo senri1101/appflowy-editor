@@ -42,6 +42,7 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
   @override
   Future<void> apply(List<TextEditingDelta> deltas) async {
     final formattedDeltas = deltas.map((e) => e.format()).toList();
+
     for (final delta in formattedDeltas) {
       _updateComposing(delta);
 
@@ -67,7 +68,8 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
       return;
     }
 
-    if (_textInputConnection == null || _textInputConnection!.attached == false) {
+    if (_textInputConnection == null ||
+        _textInputConnection!.attached == false) {
       _textInputConnection = TextInput.attach(
         this,
         configuration,
@@ -97,7 +99,9 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
     // need to debounce it to combine them together.
     Debounce.debounce(
       debounceKey,
-      PlatformExtension.isMobile ? const Duration(milliseconds: 30) : Duration.zero,
+      PlatformExtension.isMobile
+          ? const Duration(milliseconds: 30)
+          : Duration.zero,
       () {
         final deltas = getTextEditingDeltas(currentTextEditingValue, value);
         currentTextEditingValue = value;
@@ -179,7 +183,9 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
 
   void _updateComposing(TextEditingDelta delta) {
     if (delta is! TextEditingDeltaNonTextUpdate) {
-      if (composingTextRange != null && composingTextRange!.start != -1 && delta.composing.end != -1) {
+      if (composingTextRange != null &&
+          composingTextRange!.start != -1 &&
+          delta.composing.end != -1) {
         composingTextRange = TextRange(
           start: composingTextRange!.start,
           end: delta.composing.end,

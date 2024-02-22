@@ -41,7 +41,8 @@ class _EditorState extends State<Editor> {
       child: FutureBuilder<String>(
         future: widget.jsonString,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
             EditorState editorState = EditorState(
               document: Document.fromJson(
                 Map<String, Object>.from(

@@ -29,7 +29,8 @@ class KeyboardServiceWidget extends StatefulWidget {
 }
 
 @visibleForTesting
-class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements AppFlowyKeyboardService {
+class KeyboardServiceWidgetState extends State<KeyboardServiceWidget>
+    implements AppFlowyKeyboardService {
   late final SelectionGestureInterceptor interceptor;
   late final EditorState editorState;
   late final TextInputService textInputService;
@@ -57,7 +58,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
         return true;
       },
     );
-    editorState.service.selectionService.registerGestureInterceptor(interceptor);
+    editorState.service.selectionService
+        .registerGestureInterceptor(interceptor);
 
     textInputService = NonDeltaTextInputService(
       onInsert: (insertion) async => await onInsert(
@@ -152,7 +154,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
     if (kIsWeb) {
       child = Shortcuts(
         shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.space): const DoNothingAndStopPropagationIntent(),
+          LogicalKeySet(LogicalKeyboardKey.space):
+              const DoNothingAndStopPropagationIntent(),
         },
         child: child,
       );
@@ -193,7 +196,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
   }
 
   void _onSelectionChanged() {
-    final doNotAttach = editorState.selectionExtraInfo?[selectionExtraInfoDoNotAttachTextService];
+    final doNotAttach = editorState
+        .selectionExtraInfo?[selectionExtraInfoDoNotAttachTextService];
     if (doNotAttach == true) {
       return;
     }
@@ -250,9 +254,12 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
   // based on the given selection.
   TextEditingValue? _getCurrentTextEditingValue(Selection selection) {
     // Get all the editable nodes in the selection.
-    final editableNodes = editorState.getNodesInSelection(selection).where((element) => element.delta != null);
+    final editableNodes = editorState
+        .getNodesInSelection(selection)
+        .where((element) => element.delta != null);
     // Get the composing text range.
-    final composingTextRange = textInputService.composingTextRange ?? TextRange.empty;
+    final composingTextRange =
+        textInputService.composingTextRange ?? TextRange.empty;
     if (editableNodes.isNotEmpty) {
       // Get the text by concatenating all the editable nodes in the selection.
       var text = editableNodes.fold<String>(
@@ -291,7 +298,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget> implements
         return;
       }
 
-      final children = WidgetsBinding.instance.focusManager.primaryFocus?.children;
+      final children =
+          WidgetsBinding.instance.focusManager.primaryFocus?.children;
       if (children != null && !children.contains(focusNode)) {
         editorState.selection = null;
       }

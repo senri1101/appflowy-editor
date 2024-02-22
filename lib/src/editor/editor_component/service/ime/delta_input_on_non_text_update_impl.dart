@@ -5,47 +5,55 @@ Future<void> onNonTextUpdate(
   TextEditingDeltaNonTextUpdate nonTextUpdate,
   EditorState editorState,
 ) async {
-  // update the selection on Windows
-  //
-  // when typing characters with CJK IME on Windows, a non-text update is sent
-  // with the selection range.
-  final selection = editorState.selection;
+  var selection = editorState.selection;
 
-  if (PlatformExtension.isWindows) {
-    if (selection != null &&
-        nonTextUpdate.composing == TextRange.empty &&
-        nonTextUpdate.selection.isCollapsed) {
-      editorState.selection = Selection.collapsed(
-        Position(
-          path: selection.start.path,
-          offset: nonTextUpdate.selection.start,
-        ),
-      );
-    }
-  } else if (PlatformExtension.isLinux) {
-    if (selection != null) {
-      editorState.updateSelectionWithReason(
-        Selection.collapsed(
-          Position(
-            path: selection.start.path,
-            offset: nonTextUpdate.selection.start,
-          ),
-        ),
-        extraInfo: {
-          selectionExtraInfoDoNotAttachTextService: true,
-        },
-      );
-    }
-  } else if (PlatformExtension.isMacOS) {
-    if (selection != null) {
-      editorState.updateSelectionWithReason(
-        Selection.collapsed(
-          Position(
-            path: selection.start.path,
-            offset: nonTextUpdate.selection.start,
-          ),
-        ),
-      );
+  if (selection == null) {
+    return;
+  }
+
+  if (!selection.isCollapsed) {
+    await editorState.deleteSelection(selection);
+  }
+
+  selection = editorState.selection?.normalized;
+  if (selection == null || !selection.isCollapsed) {
+    return;
+  }
+
+  final node = editorState.getNodeAtPath(selection.start.path);
+  if (node == null) {
+    return;
+  }
+  assert(node.delta != null);
+
+  final delta = node.delta!;
+
+  final oldOperations = delta.map((e) => e).toList();
+  var newText = '';
+  final newOperations = <TextOperation>[];
+  for (final old in oldOperations) {
+    if (old.attributes != null) {
+      if (old.attributes!.containsKey('composing')) {
+        newText += (old as TextInsert).text;
+      } else {
+        newOperations.add(old);
+      }
+    } else {
+      newOperations.add(old);
     }
   }
+  newOperations.add(TextInsert(newText));
+  final newDelta = Delta(operations: newOperations);
+
+  final path = node.path;
+  final afterSelection = Selection(
+    start: selection.start.copyWith(path: path),
+    end: selection.end.copyWith(path: path),
+  );
+  final transaction = editorState.transaction
+    ..updateNode(node, {
+      'delta': newDelta.toJson(),
+    })
+    ..afterSelection = afterSelection;
+  editorState.apply(transaction);
 }
