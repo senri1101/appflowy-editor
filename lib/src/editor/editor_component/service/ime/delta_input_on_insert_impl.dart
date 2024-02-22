@@ -136,6 +136,7 @@ Future<void> onInsert(
           newOperations.add(old);
         }
       }
+      newText += textInserted;
       newOperations.add(TextInsert(newText));
       final newDelta = Delta(operations: newOperations);
 
