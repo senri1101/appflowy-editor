@@ -78,6 +78,10 @@ Future<void> onReplace(
     } else {
       if (!last.attributes!.containsKey('composing')) {
         shouldResetComposing = true;
+      } else {
+        if (!replacement.composing.isValid) {
+          shouldResetComposing = true;
+        }
       }
     }
 
