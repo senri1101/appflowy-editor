@@ -42,7 +42,6 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
   @override
   Future<void> apply(List<TextEditingDelta> deltas) async {
     final formattedDeltas = deltas.map((e) => e.format()).toList();
-
     for (final delta in formattedDeltas) {
       _updateComposing(delta);
 
@@ -94,16 +93,19 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
     if (currentTextEditingValue == value) {
       return;
     }
+    if (value.text.isEmpty && value.text == '') {
+      return;
+    }
 
+    final deltas = getTextEditingDeltas(currentTextEditingValue, value);
     // On mobile, the IME will send a lot of updateEditingValue events, so we
     // need to debounce it to combine them together.
     Debounce.debounce(
       debounceKey,
       PlatformExtension.isMobile
-          ? const Duration(milliseconds: 30)
+          ? const Duration(milliseconds: 10)
           : Duration.zero,
       () {
-        final deltas = getTextEditingDeltas(currentTextEditingValue, value);
         currentTextEditingValue = value;
         apply(deltas);
       },
@@ -119,8 +121,6 @@ class NonDeltaTextInputService extends TextInputService with TextInputClient {
     _textInputConnection = null;
   }
 
-  // TODO: support IME in linux / ios / android
-  // Only verify in macOS and Windows now.
   @override
   void updateCaretPosition(Size size, Matrix4 transform, Rect rect) {
     _textInputConnection

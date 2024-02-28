@@ -301,6 +301,7 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget>
       final children =
           WidgetsBinding.instance.focusManager.primaryFocus?.children;
       if (children != null && !children.contains(focusNode)) {
+        _resetComposingUnderline(editorState.selection);
         editorState.selection = null;
       }
       textInputService.close();
@@ -339,5 +340,44 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget>
         textInputService.updateCaretPosition(size, transform, rect);
       }
     }
+  }
+
+  // reset composing underline current selection
+  void _resetComposingUnderline(Selection? selection) async {
+    if (selection == null || !selection.isCollapsed) {
+      return;
+    }
+    final node = editorState.getNodeAtPath(selection.start.path);
+    if (node == null) {
+      return;
+    }
+
+    final delta = node.delta;
+    if (delta == null) {
+      return;
+    }
+
+    final oldOperations = delta.map((e) => e).toList();
+    var newText = '';
+    final newOperations = <TextOperation>[];
+    for (final old in oldOperations) {
+      if (old.attributes != null) {
+        if (old.attributes!.containsKey('composing')) {
+          newText += (old as TextInsert).text;
+        } else {
+          newOperations.add(old);
+        }
+      } else {
+        newOperations.add(old);
+      }
+    }
+    newOperations.add(TextInsert(newText));
+    final newDelta = Delta(operations: newOperations);
+
+    final updateTransaction = editorState.transaction
+      ..updateNode(node, {
+        'delta': newDelta.toJson(),
+      });
+    await editorState.apply(updateTransaction);
   }
 }
