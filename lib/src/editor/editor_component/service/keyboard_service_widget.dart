@@ -124,6 +124,8 @@ class KeyboardServiceWidgetState extends State<KeyboardServiceWidget>
   // Used in mobile only
   @override
   void closeKeyboard() {
+    _resetComposingUnderline(editorState.selection);
+    editorState.selection = null;
     textInputService.close();
   }
 
